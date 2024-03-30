@@ -1,70 +1,36 @@
-# Getting Started with Create React App
+# ember take home test
+## Tim Stanford
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## wireframe
+https://miro.com/app/board/uXjVKapIkcs=/
 
-## Available Scripts
+## curl to get data
+https://api.ember.to/v1/quotes/?origin=13&destination=42&departure_date_from=2024-03-29T15:00:00Z&departure_date_to=2024-03-29T18:00:00Z
+https://api.ember.to/v1/trips/{trip_id}
 
-In the project directory, you can run:
+## acceptance criteria
 
-### `npm start`
+GIVEN a passenger wishes to travel from Dundee to Edinburgh
+WHEN they are at the bus station
+AND they wish to know when the next bus is
+THEN they view the public display screen
+AND it displays the departure time
+AND the route and scheduled arrival time at the destination
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## out of scope
+There is detail available from the trip endpoint that will indicate if the bus is runnning late, the actual departure time can be retrieved from previous stops. This could be used to show on the board to highlight that the bus is late. Perhaps with an alert icon.
 
-### `npm test`
+Details are available in quote object that indicate the available seats. This could be used to determine how busy the bus is so that people waiting for the bus can see if will get on or not.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Currently the screen only shows the next departing bus from Dundee to Edinburgh, this is hard coded. This could be public display screen at bus stops on the way and could omit previous stop details and only show next stop details. 
 
-### `npm run build`
+The wireframe was initially designed for a 16:9 public display screen in a bus station. I later change this so that it wasn't split screen and can be viewed on a phone. on landscape display screen.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+I didn't have time to add any automation testing. Put in a system that was to be used in production this would be mandatory.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

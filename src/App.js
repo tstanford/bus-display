@@ -1,23 +1,89 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useEffect, useState } from "react";
+import dayjs from "dayjs";
+
+function getNextQuote(){
+  const startDate = new Date();
+  const endDate = new Date(new Date().setHours(new Date().getHours() + 3))
+
+  return fetch("https://api.ember.to/v1/quotes/?origin=13&destination=42&departure_date_from="+startDate.toISOString()+"&departure_date_to="+endDate.toISOString())
+  .then(res => res.json())
+  .then(data => {
+    var trips = data.quotes.map(x => {
+      return {
+        id: x.legs[0].trip_uid, 
+        origin: x.legs[0].origin.region_name, 
+        destination: x.legs[0].destination.region_name, 
+        departure: x.legs[0].departure, 
+        arrival: x.legs[0].arrival,
+        zone: x.legs[0].origin.zone[0]
+      };
+    }) 
+
+    return trips[0];
+  });
+}
+
+function getTripDetails(id){
+  return fetch("https://api.ember.to/v1/trips/"+id)
+  .then(r => r.json())
+}
+
+function RouteDetails() {
+
+  const [routeDetails, setRouteDetails] = useState({latlong:"52,-4", route: [], routeName: ""})
+
+  const fetchData = () => {
+    getNextQuote().then(quote => {
+      getTripDetails(quote.id).then(details => {
+        setRouteDetails({
+          mapUrl: "https://maps.google.com/maps?q="+quote.zone.latitude+","+quote.zone.longitude+"&t=&z=13&ie=UTF8&iwloc=&output=embed",
+          routeName: quote.origin+" to "+quote.destination,
+          route: details.route
+        })
+      });
+    });
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+  
+  return (
+    <div>
+
+      <div class="split timetable">
+          <h1>Next Bus: {routeDetails.routeName}</h1>
+          {routeDetails.route.length > 0 && (
+            <div class="stoplist">
+              {routeDetails.route.map(stop => (
+                <div class="stop">
+                  <div class="time">{dayjs(new Date(stop.arrival.actual || stop.arrival.scheduled)).format("HH:mm")}</div>              
+                  <div class="name">{stop.location.name}</div>        
+                </div>
+              ))}        
+            </div>
+          )}
+      </div>
+
+      <div class="split map">
+        <div class="mapouter">
+          <div class="gmap_canvas">
+            <iframe width="100%" height="500" id="gmap_canvas" src={routeDetails.mapUrl} frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+            </iframe>        
+          </div>
+        </div>
+      </div>
+
+    </div>
+  );
+}
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+           <RouteDetails/>
     </div>
   );
 }
