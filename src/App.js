@@ -2,46 +2,42 @@ import './App.css';
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 
-function getNextQuote(){
+const getNextQuote = async () => {
   const startDate = new Date();
   const endDate = new Date(new Date().setHours(new Date().getHours() + 3))
 
-  return fetch("https://api.ember.to/v1/quotes/?origin=13&destination=42&departure_date_from="+startDate.toISOString()+"&departure_date_to="+endDate.toISOString())
-  .then(res => res.json())
-  .then(data => {
-    var trips = data.quotes.map(x => {
-      return {
-        id: x.legs[0].trip_uid, 
-        origin: x.legs[0].origin.region_name, 
-        destination: x.legs[0].destination.region_name, 
-        departure: x.legs[0].departure, 
-        arrival: x.legs[0].arrival,
-        zone: x.legs[0].origin.zone[0]
-      };
-    }) 
+  let response = await fetch("https://api.ember.to/v1/quotes/?origin=13&destination=42&departure_date_from="+startDate.toISOString()+"&departure_date_to="+endDate.toISOString())
+  let data = await response.json();
 
-    return trips[0];
+  var trips = data.quotes.map(x => {
+    return {
+      id: x.legs[0].trip_uid, 
+      origin: x.legs[0].origin.region_name, 
+      destination: x.legs[0].destination.region_name, 
+      departure: x.legs[0].departure, 
+      arrival: x.legs[0].arrival,
+      zone: x.legs[0].origin.zone[0]
+    };
   });
+
+  return trips[0];
 }
 
-function getTripDetails(id){
-  return fetch("https://api.ember.to/v1/trips/"+id)
-  .then(r => r.json())
+const getTripDetails = async (id) => {
+  var response = await fetch("https://api.ember.to/v1/trips/"+id);
+  return await response.json();
 }
 
 function RouteDetails() {
+  const [routeDetails, setRouteDetails] = useState({latlong:"52,-4", route: [], routeName: ""});
+  const fetchData = async () => {
+    let quote = await getNextQuote();
+    let tripDetails = await getTripDetails(quote.id);
 
-  const [routeDetails, setRouteDetails] = useState({latlong:"52,-4", route: [], routeName: ""})
-
-  const fetchData = () => {
-    getNextQuote().then(quote => {
-      getTripDetails(quote.id).then(details => {
-        setRouteDetails({
-          mapUrl: "https://maps.google.com/maps?q="+quote.zone.latitude+","+quote.zone.longitude+"&t=&z=13&ie=UTF8&iwloc=&output=embed",
-          routeName: quote.origin+" to "+quote.destination,
-          route: details.route
-        })
-      });
+    setRouteDetails({
+      mapUrl: "https://maps.google.com/maps?q="+quote.zone.latitude+","+quote.zone.longitude+"&t=&z=13&ie=UTF8&iwloc=&output=embed",
+      routeName: quote.origin+" to "+quote.destination,
+      route: tripDetails.route
     });
   }
 
