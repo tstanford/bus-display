@@ -42,7 +42,13 @@ function RouteDetails() {
   }
 
   useEffect(() => {
-    fetchData()
+    fetchData();
+    
+    const interval = setInterval(() => {
+      fetchData();
+    }, 10000);
+
+    return () => clearInterval(interval);    
   }, [])
   
   return (
