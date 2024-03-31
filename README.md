@@ -31,7 +31,7 @@ Currently the screen only shows the next departing bus from Dundee to Edinburgh,
 
 The wireframe was initially designed for a 16:9 public display screen in a bus station. I later change this so that it wasn't split screen and can be viewed on a phone. on landscape display screen.
 
-I didn't have time to add any automation testing. Put in a system that was to be used in production this would be mandatory.
+I didn't have time to add any automation testing, but in a system that was to be used in production this would be mandatory.
 
 
 
