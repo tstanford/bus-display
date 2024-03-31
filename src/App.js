@@ -28,6 +28,15 @@ const getTripDetails = async (id) => {
   return await response.json();
 }
 
+function StopDetail({time,name}) {
+  return (
+    <div class="stop">
+      <div class="time">{time}</div>              
+      <div class="name">{name}</div>        
+    </div>
+  )
+}
+
 function RouteDetails() {
   const [routeDetails, setRouteDetails] = useState({latlong:"52,-4", route: [], routeName: ""});
   const fetchData = async () => {
@@ -56,15 +65,18 @@ function RouteDetails() {
 
       <div class="split timetable">
           <h1>Next Bus: {routeDetails.routeName}</h1>
+          
           {routeDetails.route.length > 0 && (
+
             <div class="stoplist">
               {routeDetails.route.map(stop => (
-                <div class="stop">
-                  <div class="time">{dayjs(new Date(stop.arrival.actual || stop.arrival.scheduled)).format("HH:mm")}</div>              
-                  <div class="name">{stop.location.name}</div>        
-                </div>
+                <StopDetail
+                  time={dayjs(new Date(stop.arrival.actual || stop.arrival.scheduled)).format("HH:mm")}
+                  name={stop.location.name}>
+                </StopDetail>
               ))}        
             </div>
+
           )}
       </div>
 
